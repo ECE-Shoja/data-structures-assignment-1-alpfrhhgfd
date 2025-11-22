@@ -21,7 +21,7 @@ public:
         return parent[v] = findSet(parent[v]);
     }
 
-    void unionSets(int a, int b) {
+    void unionSet(int a, int b) {
         a = findSet(a);
         b = findSet(b);
         if (a != b) {
