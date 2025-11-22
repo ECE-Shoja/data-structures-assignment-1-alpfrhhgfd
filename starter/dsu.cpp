@@ -1,42 +1,33 @@
-#include <bits/stdc++.h>
+#include <vector>
+#include <numeric>
+#include <algorithm>
+
 using namespace std;
 
-vector<int> parent, sz;
+class DSU {
+private:
+    vector<int> parent;
+    vector<int> size;
 
-int findSet(int v) {
-    // TODO: implement path compression
-}
-
-void unionSet(int a, int b) {
-    // TODO: implement union by size/rank
-}
-
-int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-
-    int n, q;
-    cin >> n >> q;
-
-    parent.resize(n + 1);
-    sz.resize(n + 1, 1);
-
-    for (int i = 1; i <= n; i++) {
-        parent[i] = i;
+public:
+    DSU(int n) {
+        parent.resize(n + 1);
+        size.resize(n + 1, 1);
+        for (int i = 1; i <= n; ++i) parent[i] = i;
     }
 
-    while (q--) {
-        char type;
-        int a, b;
-        cin >> type >> a >> b;
+    int findSet(int v) {
+        if (v == parent[v]) return v;
+        return parent[v] = findSet(parent[v]);
+    }
 
-        if (type == '+') {
-            unionSet(a, b);
-        } else if (type == '?') {
-            if (findSet(a) == findSet(b)) cout << "YES\n";
-            else cout << "NO\n";
+    void unionSets(int a, int b) {
+        a = findSet(a);
+        b = findSet(b);
+        if (a != b) {
+            if (size[a] < size[b]) swap(a, b);
+            parent[b] = a;
+            size[a] += size[b];
         }
     }
-
-    return 0;
-}
+};
